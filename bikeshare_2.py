@@ -6,6 +6,9 @@ CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
 
+MONTH_LIST = ['all', 'january', 'february', 'march', 'april', 'may', 'june']
+DAY_LIST = ['all', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+
 def get_filters():
     """
     Asks user to specify a city, month, and day to analyze.
@@ -27,14 +30,12 @@ def get_filters():
 
     # get user input for month (all, january, february, ... , june)
     month = ''
-    MONTH_LIST = ['all', 'january', 'february', 'march', 'april', 'may', 'june']
     while(month.lower() not in MONTH_LIST):
         month = input("Enter the month: ")
 
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
     day = ''
-    DAY_LIST = ['all', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
     while(day.lower() not in DAY_LIST):
         day = input("Enter the day: ")
 
@@ -53,7 +54,20 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
+    city=city.lower().replace(' ', '_')
+    month = MONTH_LIST.index(month)
+    day = DAY_LIST.index(day) - 1
 
+
+    df = pd.read_csv(f'{city}.csv')
+    df['Start Time'] = pd.to_datetime(df['Start Time'])
+    df['End Time'] = pd.to_datetime(df['End Time'])
+
+    if month != 'all':
+        df = df[df['Start Time'].dt.month == month]
+
+    if day != 'all':
+        df = df[df['Start Time'].dt.day_of_week == day]
 
     return df
 
