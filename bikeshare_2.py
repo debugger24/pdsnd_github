@@ -55,18 +55,17 @@ def load_data(city, month, day):
         df - Pandas DataFrame containing city data filtered by month and day
     """
     city=city.lower().replace(' ', '_')
-    month = MONTH_LIST.index(month)
-    day = DAY_LIST.index(day) - 1
-
-
+    
     df = pd.read_csv(f'{city}.csv')
     df['Start Time'] = pd.to_datetime(df['Start Time'])
     df['End Time'] = pd.to_datetime(df['End Time'])
 
     if month != 'all':
+        month = MONTH_LIST.index(month)
         df = df[df['Start Time'].dt.month == month]
 
     if day != 'all':
+        day = DAY_LIST.index(day) - 1
         df = df[df['Start Time'].dt.day_of_week == day]
 
     return df
@@ -79,12 +78,17 @@ def time_stats(df):
     start_time = time.time()
 
     # display the most common month
-
+    most_common_month = df['Start Time'].dt.month.value_counts().index[0]
+    print(f"Most common month {MONTH_LIST[most_common_month]}")
 
     # display the most common day of week
+    most_common_day_of_week = df['Start Time'].dt.day_of_week.value_counts().index[0]
+    print(f"Most common day of week {DAY_LIST[most_common_day_of_week + 1]}")
 
 
     # display the most common start hour
+    most_common_hour = df['Start Time'].dt.hour.value_counts().index[0]
+    print(f"Most common hour {most_common_hour}")
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -98,13 +102,18 @@ def station_stats(df):
     start_time = time.time()
 
     # display most commonly used start station
+    most_common_start_station = df['Start Station'].value_counts().index[0]
+    print(f"Most common start station {most_common_start_station}")
 
 
     # display most commonly used end station
+    most_common_end_station = df['End Station'].value_counts().index[0]
+    print(f"Most common end station {most_common_end_station}")
 
 
     # display most frequent combination of start station and end station trip
-
+    most_common_start_end_station = df[['Start Station', 'End Station']].value_counts().index[0]
+    print(f"Most common start and end station {most_common_start_end_station}")
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -117,9 +126,13 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     # display total travel time
+    total_travel_time = df['Trip Duration'].sum()/60/60
+    print(f"Total travel time {total_travel_time} hours")
 
 
     # display mean travel time
+    mean_travel_time = df['Trip Duration'].mean()/60/60
+    print(f"Mean travel time {mean_travel_time} hours")
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))
