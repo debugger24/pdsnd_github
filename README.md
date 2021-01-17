@@ -1,15 +1,16 @@
 ### Date created
-Include the date you created this project and README file.
+2021-01-17
 
 ### Project Title
-Replace the Project Title
+Bikeshare
 
 ### Description
-Describe what your project is about and what it does
+Its about bikeshare
 
 ### Files used
-Include the files used
+bikeshare_2.py
+
 
 ### Credits
-It's important to give proper credit. Add links to any repo that inspired you or blogposts you consulted.
+Udacity Machine Learning Nanodegree
 
